@@ -43,9 +43,7 @@ def get_tweets(politician_id, twitter_id, num_of_tweets)
     # print_timeline(tweets)
 
     tweets.each do |t|
-      p politician_id
-      p t["text"]
-      p t["created_at"]
+      puts "#{politician_id} #{t["user"]["name"]} #{t["text"]}"
       Tweet.create({'politician_id' => politician_id.to_i, 'text'=>t["text"], 'tweet_datetime' => t["created_at"]})
     end
   end
