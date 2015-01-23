@@ -1,7 +1,6 @@
 require_relative '../../db/config'
 
-class Politician < ActiveRecord::Base
-  has_many :tweets
+class Senator < Politician
 
   def name
     "#{firstname} #{lastname}"

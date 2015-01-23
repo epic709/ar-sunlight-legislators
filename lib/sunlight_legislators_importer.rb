@@ -1,5 +1,10 @@
 require 'csv'
 require_relative '../app/models/politician'
+require_relative '../app/models/senator'
+require_relative '../app/models/representative'
+require_relative '../app/models/tweet'
+require_relative 'tweet_downloader'
+
 
 class SunlightLegislatorsImporter
   def self.import(filename=File.dirname(__FILE__) + "/../db/data/legislators.csv")
@@ -9,13 +14,11 @@ class SunlightLegislatorsImporter
     csv.each do |row|
       hash = {}
       row.each do |field, value|
-
-  # hash = { :firstname => ? }
         hash[field] = value unless ignore_fields.include?(field)
-          # raise NotImplementedError, "TODO: figure out what to do with this row and do it!"
-          # TODO: end
       end
-      Politician.create(hash)
+      politician = Senator.create(hash) if row['title'] == 'Sen'
+      politician = Representative.create(hash) if row['title'] == 'Rep'
+      get_tweets(politician.id, row['twitter_id'], 2) unless row['twitter_id'].empty?
     end
   end
 end

@@ -1,7 +1,13 @@
 require 'rake'
 require 'rspec/core/rake_task'
+require 'pathname'
+
 require_relative 'db/config'
 require_relative 'lib/sunlight_legislators_importer'
+require_relative 'lib/tweet_downloader'
+
+
+APP_ROOT = Pathname.new(File.expand_path(File.join(File.dirname(__FILE__), '..')))
 
 desc "create the database"
 task "db:create" do
@@ -26,6 +32,11 @@ desc "populate the test database with sample data"
 task "db:populate" do
   SunlightLegislatorsImporter.import
 end
+
+# desc "our twitter downloader"
+# task "db:download" do
+#   require APP_ROOT.join('lib', 'tweet_downloader.rb')
+# end
 
 desc 'Retrieves the current schema version number'
 task "db:version" do
